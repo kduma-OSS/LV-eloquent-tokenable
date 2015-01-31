@@ -9,7 +9,7 @@ Add the package to the require section of your composer.json and run `composer u
 # Prepare models
 In your model add following lines:
     
-    use KDuma\Eloquent\Tokenable;
+    use \KDuma\Eloquent\Tokenable;
     protected $appends = array('token');
 
 Optionally you can add also:
