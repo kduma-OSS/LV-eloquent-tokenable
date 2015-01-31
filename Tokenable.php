@@ -15,7 +15,7 @@ trait Tokenable {
      */
     private function getHashingInstance(){
         $salt = Config::get('app.key') . ($this->salt?:$this->getTable());
-        $min_hash_length = $this->length?:15;
+        $min_hash_length = $this->length?:10;
         $alphabet = $this->alphabet?:'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
         return new Hashids($salt, $min_hash_length, $alphabet);
     }
