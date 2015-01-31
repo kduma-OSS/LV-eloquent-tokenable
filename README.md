@@ -23,7 +23,10 @@ A salt length. Default is 10.
 - `protected $alphabet = 'qwertyuiopasdfghjklzxcvbnm1234567890';`  
 A hash alphabet. Default is `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890`
 
-
+# Usage
+- `$model->token` - Generate tokens
+- `Model::whereToken($id)->first()` - Find by token. (`whereToken` is query scope)
+   
 
 # Hashids
 
