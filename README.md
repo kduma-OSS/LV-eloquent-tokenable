@@ -32,3 +32,7 @@ A hash alphabet. Default is `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXY
 
 A special thanks to creators of [hashids](https://github.com/ivanakimov/hashids.php), a PHP class that this package is based.
 
+
+
+# Packagist
+View this package on Packagist.org: [kduma/eloquent-tokenable](https://packagist.org/packages/kduma/eloquent-tokenable)
