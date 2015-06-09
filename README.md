@@ -1,10 +1,16 @@
 # L5-eloquent-tokenable
+[![Latest Stable Version](https://poser.pugx.org/kduma/eloquent-tokenable/v/stable.svg)](https://packagist.org/packages/kduma/eloquent-tokenable) 
+[![Total Downloads](https://poser.pugx.org/kduma/eloquent-tokenable/downloads.svg)](https://packagist.org/packages/kduma/eloquent-tokenable) 
+[![Latest Unstable Version](https://poser.pugx.org/kduma/eloquent-tokenable/v/unstable.svg)](https://packagist.org/packages/kduma/eloquent-tokenable) 
+[![License](https://poser.pugx.org/kduma/eloquent-tokenable/license.svg)](https://packagist.org/packages/kduma/eloquent-tokenable)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/76ba87c2-d5c1-4516-af23-3d38f2990145/mini.png)](https://insight.sensiolabs.com/projects/76ba87c2-d5c1-4516-af23-3d38f2990145)
+
 Allows using tokens (HashIDs) instead of id in Laravel Eloquent models.
 
 # Setup
 Add the package to the require section of your composer.json and run `composer update`
 
-    "kduma/eloquent-tokenable": "~1.0"
+    "kduma/eloquent-tokenable": "^1.1"
 
 # Prepare models
 In your model add following lines:
