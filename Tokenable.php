@@ -1,22 +1,24 @@
 <?php
+
 namespace KDuma\Eloquent;
 
 use Config;
 use Hashids\Hashids;
 
 /**
- * Class Tokenable
- * @package KDuma\Eloquent
+ * Class Tokenable.
  */
-trait Tokenable {
-
+trait Tokenable
+{
     /**
      * @return Hashids
      */
-    private function getHashingInstance(){
-        $salt = Config::get('app.key') . ($this->salt?:$this->getTable());
-        $min_hash_length = $this->length?:10;
-        $alphabet = $this->alphabet?:'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+    private function getHashingInstance()
+    {
+        $salt = Config::get('app.key').($this->salt ?: $this->getTable());
+        $min_hash_length = $this->length ?: 10;
+        $alphabet = $this->alphabet ?: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+
         return new Hashids($salt, $min_hash_length, $alphabet);
     }
 
@@ -26,6 +28,7 @@ trait Tokenable {
     public function getTokenAttribute()
     {
         $hashids = $this->getHashingInstance();
+
         return $hashids->encode($this->id);
     }
 
@@ -39,8 +42,9 @@ trait Tokenable {
         $hashids = $this->getHashingInstance();
         $id = $hashids->decode($token);
 
-        if(count($id) == 0)
+        if (count($id) == 0) {
             return false;
+        }
 
         return $query->where('id', $id[0]);
     }
