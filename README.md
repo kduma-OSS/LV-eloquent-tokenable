@@ -4,6 +4,7 @@
 [![Latest Unstable Version](https://poser.pugx.org/kduma/eloquent-tokenable/v/unstable.svg)](https://packagist.org/packages/kduma/eloquent-tokenable) 
 [![License](https://poser.pugx.org/kduma/eloquent-tokenable/license.svg)](https://packagist.org/packages/kduma/eloquent-tokenable)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/76ba87c2-d5c1-4516-af23-3d38f2990145/mini.png)](https://insight.sensiolabs.com/projects/76ba87c2-d5c1-4516-af23-3d38f2990145)
+[![StyleCI](https://styleci.io/repos/30102978/shield?branch=master)](https://styleci.io/repos/30102978)
 
 Allows using tokens (HashIDs) instead of id in Laravel Eloquent models.
 
