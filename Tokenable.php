@@ -43,7 +43,7 @@ trait Tokenable
         $id = $hashids->decode($token);
 
         if (count($id) == 0) {
-            return false;
+            return $query->whereRaw('1 = 0');
         }
 
         return $query->where('id', $id[0]);
