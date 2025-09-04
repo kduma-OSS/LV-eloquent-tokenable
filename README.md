@@ -8,6 +8,8 @@
 
 Allows using tokens (HashIDs) instead of id in Laravel Eloquent models.
 
+Check full documentation here: [opensource.duma.sh/libraries/php/eloquent-tokenable](https://opensource.duma.sh/libraries/php/eloquent-tokenable)
+
 # Setup
 Add the package to the require section of your composer.json and run `composer update`
 
