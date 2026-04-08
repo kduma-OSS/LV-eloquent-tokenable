@@ -1,51 +1,62 @@
 <?php
+declare(strict_types=1);
 
 namespace KDuma\Eloquent;
 
-use Config;
 use Hashids\Hashids;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use KDuma\Eloquent\Attributes\HasToken;
 
-/**
- * Class Tokenable.
- */
 trait Tokenable
 {
-    /**
-     * @return Hashids
-     */
-    private function getHashingInstance()
+    private function getHashingInstance(): Hashids
     {
-        $salt = Config::get('app.key').($this->salt ?: $this->getTable());
-        $min_hash_length = $this->length ?: 10;
-        $alphabet = $this->alphabet ?: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+        $salt = config('app.key') . (
+            $this->resolveTokenableConfig('salt', 'salt', null)
+            ?? $this->getTable()
+        );
+        $minHashLength = $this->resolveTokenableConfig('length', 'length', 10);
+        $alphabet = $this->resolveTokenableConfig('alphabet', 'alphabet', 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
 
-        return new Hashids($salt, $min_hash_length, $alphabet);
+        return new Hashids($salt, $minHashLength, $alphabet);
     }
 
-    /**
-     * @return string
-     */
-    public function getTokenAttribute()
+    protected function token(): Attribute
     {
-        $hashids = $this->getHashingInstance();
-
-        return $hashids->encode($this->id);
+        return Attribute::make(
+            get: fn (): string => $this->getHashingInstance()->encode($this->id),
+        );
     }
 
-    /**
-     * @param $query
-     * @param $token
-     * @return bool|int
-     */
-    public function scopeWhereToken($query, $token)
+    public function scopeWhereToken(Builder $query, string $token): Builder
     {
         $hashids = $this->getHashingInstance();
         $id = $hashids->decode($token);
 
-        if (count($id) == 0) {
+        if ($id === []) {
             return $query->whereRaw('1 = 0');
         }
 
         return $query->where('id', $id[0]);
+    }
+
+    private function resolveTokenableConfig(string $attrProperty, string $legacyProperty, mixed $default): mixed
+    {
+        $value = static::resolveClassAttribute(HasToken::class, $attrProperty);
+        if ($value !== null) {
+            return $value;
+        }
+
+        if (isset($this->{$legacyProperty})) {
+            trigger_error(
+                "Using \${$legacyProperty} on " . static::class . ' is deprecated. Use #[HasToken] attribute instead.',
+                E_USER_DEPRECATED,
+            );
+
+            return $this->{$legacyProperty};
+        }
+
+        return $default;
     }
 }
