@@ -1,47 +1,40 @@
-# L5-eloquent-tokenable
-[![Latest Stable Version](https://poser.pugx.org/kduma/eloquent-tokenable/v/stable.svg)](https://packagist.org/packages/kduma/eloquent-tokenable) 
-[![Total Downloads](https://poser.pugx.org/kduma/eloquent-tokenable/downloads.svg)](https://packagist.org/packages/kduma/eloquent-tokenable) 
-[![Latest Unstable Version](https://poser.pugx.org/kduma/eloquent-tokenable/v/unstable.svg)](https://packagist.org/packages/kduma/eloquent-tokenable) 
+# Eloquent Tokenable
+
+[![Latest Stable Version](https://poser.pugx.org/kduma/eloquent-tokenable/v/stable.svg)](https://packagist.org/packages/kduma/eloquent-tokenable)
+[![Total Downloads](https://poser.pugx.org/kduma/eloquent-tokenable/downloads.svg)](https://packagist.org/packages/kduma/eloquent-tokenable)
 [![License](https://poser.pugx.org/kduma/eloquent-tokenable/license.svg)](https://packagist.org/packages/kduma/eloquent-tokenable)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/76ba87c2-d5c1-4516-af23-3d38f2990145/mini.png)](https://insight.sensiolabs.com/projects/76ba87c2-d5c1-4516-af23-3d38f2990145)
-[![StyleCI](https://styleci.io/repos/30102978/shield?branch=master)](https://styleci.io/repos/30102978)
 
-Allows using tokens (HashIDs) instead of id in Laravel Eloquent models.
+Eloquent trait for exposing Hashids-based tokens on Laravel models instead of numeric IDs.
 
-Check full documentation here: [opensource.duma.sh/libraries/php/eloquent-tokenable](https://opensource.duma.sh/libraries/php/eloquent-tokenable)
+Full documentation: [opensource.duma.sh/libraries/php/eloquent-tokenable](https://opensource.duma.sh/libraries/php/eloquent-tokenable)
 
-# Setup
-Add the package to the require section of your composer.json and run `composer update`
+## Requirements
 
-    "kduma/eloquent-tokenable": "^1.1"
+- PHP `^8.3`
+- Laravel `^13.0`
 
-# Prepare models
-In your model add following lines:
-    
-    use \KDuma\Eloquent\Tokenable;
-    protected $appends = array('token');
+## Installation
 
-Optionally you can add also:
+```bash
+composer require kduma/eloquent-tokenable
+```
 
-- `protected $salt = 'SALT';`  
-A salt for making hashes. Default is table name. This salt is added to your `APP_KEY`.
+## Usage
 
-- `protected $length = 10;`  
-A salt length. Default is 10.
+```php
+use KDuma\Eloquent\Tokenable;
+use KDuma\Eloquent\Attributes\HasToken;
 
-- `protected $alphabet = 'qwertyuiopasdfghjklzxcvbnm1234567890';`  
-A hash alphabet. Default is `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890`
+#[HasToken(length: 10)]
+class Order extends Model
+{
+    use Tokenable;
+}
+```
 
-# Usage
-- `$model->token` - Generate tokens
-- `Model::whereToken($id)->first()` - Find by token. (`whereToken` is query scope)
-   
+```php
+$order = Order::find(1);
+echo $order->token; // e.g. "k3Zx9mPqW2"
 
-# Hashids
-
-A special thanks to creators of [hashids](https://github.com/ivanakimov/hashids.php), a PHP class that this package is based.
-
-
-
-# Packagist
-View this package on Packagist.org: [kduma/eloquent-tokenable](https://packagist.org/packages/kduma/eloquent-tokenable)
+$order = Order::whereToken('k3Zx9mPqW2')->first();
+```
