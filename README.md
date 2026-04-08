@@ -1,5 +1,9 @@
 # Eloquent Tokenable
 
+[![Latest Stable Version](https://poser.pugx.org/kduma/eloquent-tokenable/v/stable.svg)](https://packagist.org/packages/kduma/eloquent-tokenable)
+[![Total Downloads](https://poser.pugx.org/kduma/eloquent-tokenable/downloads.svg)](https://packagist.org/packages/kduma/eloquent-tokenable)
+[![License](https://poser.pugx.org/kduma/eloquent-tokenable/license.svg)](https://packagist.org/packages/kduma/eloquent-tokenable)
+
 Eloquent trait for exposing Hashids-based tokens on Laravel models instead of numeric IDs.
 
 Full documentation: [opensource.duma.sh/libraries/php/eloquent-tokenable](https://opensource.duma.sh/libraries/php/eloquent-tokenable)
