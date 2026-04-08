@@ -49,10 +49,15 @@ trait Tokenable
         }
 
         if (property_exists($this, $legacyProperty)) {
-            trigger_error(
-                "Using \${$legacyProperty} on " . static::class . ' is deprecated. Use #[HasToken] attribute instead.',
-                E_USER_DEPRECATED,
-            );
+            static $fired = [];
+            $key = static::class . '::$' . $legacyProperty;
+            if (!isset($fired[$key])) {
+                $fired[$key] = true;
+                trigger_error(
+                    "Using \${$legacyProperty} on " . static::class . ' is deprecated. Use #[HasToken] attribute instead.',
+                    E_USER_DEPRECATED,
+                );
+            }
 
             $value = $this->{$legacyProperty};
 
