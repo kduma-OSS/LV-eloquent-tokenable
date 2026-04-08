@@ -1,47 +1,82 @@
-# L5-eloquent-tokenable
-[![Latest Stable Version](https://poser.pugx.org/kduma/eloquent-tokenable/v/stable.svg)](https://packagist.org/packages/kduma/eloquent-tokenable) 
-[![Total Downloads](https://poser.pugx.org/kduma/eloquent-tokenable/downloads.svg)](https://packagist.org/packages/kduma/eloquent-tokenable) 
-[![Latest Unstable Version](https://poser.pugx.org/kduma/eloquent-tokenable/v/unstable.svg)](https://packagist.org/packages/kduma/eloquent-tokenable) 
-[![License](https://poser.pugx.org/kduma/eloquent-tokenable/license.svg)](https://packagist.org/packages/kduma/eloquent-tokenable)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/76ba87c2-d5c1-4516-af23-3d38f2990145/mini.png)](https://insight.sensiolabs.com/projects/76ba87c2-d5c1-4516-af23-3d38f2990145)
-[![StyleCI](https://styleci.io/repos/30102978/shield?branch=master)](https://styleci.io/repos/30102978)
+# Eloquent Tokenable
 
-Allows using tokens (HashIDs) instead of id in Laravel Eloquent models.
+[![Latest Stable Version](https://poser.pugx.org/kduma/eloquent-tokenable/v/stable.svg)](https://packagist.org/packages/kduma/eloquent-tokenable)
+[![Total Downloads](https://poser.pugx.org/kduma/eloquent-tokenable/downloads.svg)](https://packagist.org/packages/kduma/eloquent-tokenable)
+[![License](https://poser.pugx.org/kduma/eloquent-tokenable/license.svg)](https://packagist.org/packages/kduma/eloquent-tokenable)
+
+Allows using tokens (HashIDs) instead of numeric IDs in Laravel Eloquent models.
 
 Check full documentation here: [opensource.duma.sh/libraries/php/eloquent-tokenable](https://opensource.duma.sh/libraries/php/eloquent-tokenable)
 
-# Setup
-Add the package to the require section of your composer.json and run `composer update`
+## Requirements
 
-    "kduma/eloquent-tokenable": "^1.1"
+- PHP `^8.3`
+- Laravel `^13.0`
 
-# Prepare models
-In your model add following lines:
-    
-    use \KDuma\Eloquent\Tokenable;
-    protected $appends = array('token');
+## Installation
 
-Optionally you can add also:
+```bash
+composer require kduma/eloquent-tokenable
+```
 
-- `protected $salt = 'SALT';`  
-A salt for making hashes. Default is table name. This salt is added to your `APP_KEY`.
+## Setup
 
-- `protected $length = 10;`  
-A salt length. Default is 10.
+Add the `Tokenable` trait to your model:
 
-- `protected $alphabet = 'qwertyuiopasdfghjklzxcvbnm1234567890';`  
-A hash alphabet. Default is `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890`
+```php
+use KDuma\Eloquent\Tokenable;
 
-# Usage
-- `$model->token` - Generate tokens
-- `Model::whereToken($id)->first()` - Find by token. (`whereToken` is query scope)
-   
+class Order extends Model
+{
+    use Tokenable;
+}
+```
 
-# Hashids
+## Configuration
 
-A special thanks to creators of [hashids](https://github.com/ivanakimov/hashids.php), a PHP class that this package is based.
+### New style — PHP Attribute (recommended)
 
+```php
+use KDuma\Eloquent\Tokenable;
+use KDuma\Eloquent\Attributes\HasToken;
 
+#[HasToken(length: 12, alphabet: 'abcdef1234567890')]
+class Order extends Model
+{
+    use Tokenable;
+}
+```
 
-# Packagist
-View this package on Packagist.org: [kduma/eloquent-tokenable](https://packagist.org/packages/kduma/eloquent-tokenable)
+Available `HasToken` parameters:
+- `length` — minimum hash length (default: `10`)
+- `alphabet` — characters used in the hash (default: `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890`)
+- `salt` — custom salt added to `APP_KEY` (default: table name)
+
+### Old style — model properties (deprecated, triggers `E_USER_DEPRECATED`)
+
+```php
+class Order extends Model
+{
+    use Tokenable;
+
+    protected ?string $salt = 'SALT';       // ⚠️ deprecated
+    protected int $length = 10;             // ⚠️ deprecated
+    protected string $alphabet = 'abc...';  // ⚠️ deprecated
+}
+```
+
+## Usage
+
+- `$model->token` — returns the HashID token for the model
+- `Model::whereToken($token)` — query scope to find by token
+
+```php
+$order = Order::find(1);
+echo $order->token; // e.g. "k3Zx9mPqW2"
+
+$found = Order::whereToken('k3Zx9mPqW2')->first();
+```
+
+## Packagist
+
+[kduma/eloquent-tokenable](https://packagist.org/packages/kduma/eloquent-tokenable)
