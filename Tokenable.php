@@ -48,7 +48,7 @@ trait Tokenable
             return $value;
         }
 
-        if (isset($this->{$legacyProperty})) {
+        if (isset($this->{$legacyProperty}) && $this->{$legacyProperty} !== '' && $this->{$legacyProperty} !== 0) {
             trigger_error(
                 "Using \${$legacyProperty} on " . static::class . ' is deprecated. Use #[HasToken] attribute instead.',
                 E_USER_DEPRECATED,
